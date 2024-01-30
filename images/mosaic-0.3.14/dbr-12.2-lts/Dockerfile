@@ -58,9 +58,6 @@ set -e
 
 if [ ${WITH_MOSAIC} == 1 ]
 then
-  # Install build tools for dependencies (h3 and scikit need to build)
-  apt-get update
-  apt-get install -y build-essential
 
   # Install the databricks-mosaic package
   ${DBR_PIP_EXEC} install --no-cache-dir "databricks-mosaic==${MOSAIC_VERSION}"
