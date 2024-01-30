@@ -9,7 +9,6 @@ ARG WITH_UBUNTUGIS=0
 ARG MOSAIC_VERSION=0.4.0
 
 ARG DBR_JARS_DIR=/databricks/jars
-ARG DBR_SPARK_CONF_DIR=/databricks/spark/conf
 
 ARG DBR_PIP_EXEC=/databricks/python3/bin/pip
 ARG DBR_PYTHON_EXEC=/databricks/python3/bin/python
@@ -24,7 +23,7 @@ ${DBR_PIP_EXEC} install --no-cache-dir --upgrade pip
 ${DBR_PIP_EXEC} install --no-cache-dir --upgrade databricks-sdk
 
 # Create Databricks spark directories
-mkdir -p ${DBR_JARS_DIR} ${DBR_SPARK_CONF_DIR}
+mkdir -p ${DBR_JARS_DIR}
 
 EOF
 
@@ -95,14 +94,6 @@ then
 
   # Copy all of the .jar files to the databricks/jars directory
   find $MOSAIC_LIB_DIR -type f -name "*.jar" -exec cp "{}" ${DBR_JARS_DIR} ';'
-
-  # Add the mosaic configuration to the spark-defaults.conf file
-  echo "spark.databricks.labs.mosaic.jar.autoattach true" >> ${DBR_SPARK_CONF_DIR}/spark-defaults.conf
-  echo "spark.databricks.labs.mosaic.jar.path ${DBR_JARS_DIR}" >> ${DBR_SPARK_CONF_DIR}/spark-defaults.conf 
-  echo "spark.databricks.labs.mosaic.raster.api GDAL" >> ${DBR_SPARK_CONF_DIR}/spark-defaults.conf
-  echo "spark.databricks.labs.mosaic.geometry.api JTS" >> ${DBR_SPARK_CONF_DIR}/spark-defaults.conf
-  echo "spark.databricks.labs.mosaic.index.system H3" >> ${DBR_SPARK_CONF_DIR}/spark-defaults.conf
-  echo "spark.sql.extensions com.databricks.labs.mosaic.sql.extensions.MosaicSQL" >> ${DBR_SPARK_CONF_DIR}/spark-defaults.conf
 
   apt-get clean
   rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
