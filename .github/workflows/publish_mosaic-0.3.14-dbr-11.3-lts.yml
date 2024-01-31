@@ -29,3 +29,4 @@ jobs:
         file: ./images/mosaic-0.3.14/dbr-11.3-lts/Dockerfile
         push: true
         tags: ghcr.io/${{ github.repository }}:0.3.14-dbr-11.3-lts
+        platforms: linux/amd64
